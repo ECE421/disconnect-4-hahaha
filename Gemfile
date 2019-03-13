@@ -7,5 +7,3 @@ gem 'simplecov', require: false, group: :test
 gem 'test-unit', require: false, group: :test
 
 gem 'rake'
-
-gemspec
