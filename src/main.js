@@ -20770,17 +20770,17 @@ if (event == null) event = nil;
   var $a, $b, TMP_1, $c, TMP_2, self = Opal.top, $scope = Opal, nil = Opal.nil, $breaker = Opal.breaker, $slice = Opal.slice, $hash2 = Opal.hash2;
   if (self.app == null) self.app = nil;
 
-  Opal.add_stubs(['$require', '$app', '$on_window_all_closed', '$!=', '$platform', '$quit', '$on_ready', '$main_window=', '$tap', '$load_url', '$on_closed', '$new']);
+  Opal.add_stubs(['$require', '$app', '$on_window_all_closed', '$==', '$platform', '$quit', '$on_ready', '$main_window=', '$tap', '$load_url', '$on_closed', '$new']);
   self.$require("proton");
   self.$require("proton/browser_window");
   self.app = $scope.get('Proton').$app();
-  ($a = ($b = self.app).$on_window_all_closed, $a.$$p = (TMP_1 = function(){var self = TMP_1.$$s || this, $c;
+  ($a = ($b = self.app).$on_window_all_closed, $a.$$p = (TMP_1 = function(){var self = TMP_1.$$s || this;
     if (self.app == null) self.app = nil;
 
-  if ((($c = $scope.get('Process').$platform()['$!=']("darwin")) !== nil && $c != null && (!$c.$$is_boolean || $c == true))) {
-      return self.app.$quit()
-      } else {
+  if ($scope.get('Process').$platform()['$==']("darwin")) {
       return nil
+      } else {
+      return self.app.$quit()
     }}, TMP_1.$$s = self, TMP_1.$$arity = 0, TMP_1), $a).call($b);
   return ($a = ($c = self.app).$on_ready, $a.$$p = (TMP_2 = function(){var self = TMP_2.$$s || this, $d, $e, $f, $g, TMP_3;
 

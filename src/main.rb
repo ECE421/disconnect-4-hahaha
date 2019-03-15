@@ -4,7 +4,7 @@ require 'proton/browser_window'
 @app = Proton.app
 
 @app.on_window_all_closed do
-  @app.quit if Process.platform != 'darwin'
+  @app.quit unless Process.platform == 'darwin'
 end
 
 @app.on_ready do
