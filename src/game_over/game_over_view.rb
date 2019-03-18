@@ -1,3 +1,5 @@
+require 'observer'
+
 # View that represents the game over screen
 class GameOverView
   include Observable

@@ -1,3 +1,5 @@
+require 'observer'
+
 # View that represents that playable game board
 class GameBoardView
   include Observable

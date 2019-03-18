@@ -1,3 +1,10 @@
+require_relative 'game_board/game_board_presenter'
+require_relative 'game_board/game_board_view'
+require_relative 'game_over/game_over_presenter'
+require_relative 'game_over/game_over_view'
+require_relative 'main_menu/main_menu_presenter'
+require_relative 'main_menu/main_menu_view'
+
 # Presenter class for the AppModel
 class AppPresenter
   def initialize(model)
@@ -6,11 +13,11 @@ class AppPresenter
     @main_menu_view.add_observer(@main_menu_presenter)
 
     @game_board_view = GameBoardView.new
-    @game_board_presenter = GameBoardPresenter(model)
+    @game_board_presenter = GameBoardPresenter.new(model)
     @game_board_view.add_observer(@game_board_presenter)
 
     @game_over_view = GameOverView.new
-    @game_over_presenter = GameOverPresenter(model)
+    @game_over_presenter = GameOverPresenter.new(model)
     @game_over_view.add_observer(@game_over_presenter)
   end
 

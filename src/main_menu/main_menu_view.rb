@@ -1,3 +1,5 @@
+require 'observer'
+
 # View that represents the main menu screen
 class MainMenuView
   include Observable
