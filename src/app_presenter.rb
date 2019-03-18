@@ -2,13 +2,16 @@
 class AppPresenter
   def initialize(model)
     @main_menu_view = MainMenuView.new
-    @main_menu_presenter = MainMenuPresenter.new(model, @main_menu_view)
+    @main_menu_presenter = MainMenuPresenter.new(model)
+    @main_menu_view.add_observer(@main_menu_presenter)
 
     @game_board_view = GameBoardView.new
-    @game_board_presenter = GameBoardPresenter(model, @game_board_view)
+    @game_board_presenter = GameBoardPresenter(model)
+    @game_board_view.add_observer(@game_board_presenter)
 
     @game_over_view = GameOverView.new
-    @game_over_presenter = GameOverPresenter(model, @game_over_view)
+    @game_over_presenter = GameOverPresenter(model)
+    @game_over_view.add_observer(@game_over_presenter)
   end
 
   def turn_updated(state)

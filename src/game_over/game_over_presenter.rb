@@ -1,6 +1,11 @@
+# A presenter that converts actions in the GameOverView to AppModel function calls
 class GameOverPresenter
-  def initialize(model, view)
+  def initialize(model)
     @model = model
-    @view = view
+  end
+
+  def update(data)
+    # TODO
+    # @model.update_turn(data)
   end
 end
