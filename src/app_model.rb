@@ -21,55 +21,23 @@ class AppModel
   def initialize
     @app = Gtk::Application.new('disconnect.four.hahaha', :flags_none)
 
-    @app.signal_connect 'activate' do |application|
+    @app.signal_connect('activate') do |application|
       window = Gtk::ApplicationWindow.new(application)
       window.set_title('Window')
       window.set_border_width(20)
 
-      # Here we construct the container that is going pack our buttons
-      grid = Gtk::Grid.new
-      window.add(grid)
+      @presenter = AppPresenter.new(self, window)
 
-      css_provider = Gtk::CssProvider.new
-      css_provider.load(data: <<-CSS)
-      button {
-        background-image: image(blue);
+      @state = {
+        turn: PLAYER_1,
+        game_type: CONNECT_4,
+        game_phase: MENU,
+        board_data: [],
+        winner: nil
       }
 
-      button:hover {
-        background-image: image(purple);
-      }
-      CSS
-
-      (0..6).each do |col|
-        (0..5).each do |row|
-          button = Gtk::Button.new
-          button.set_size_request(100, 100)
-          button.style_context.add_provider(
-            css_provider,
-            Gtk::StyleProvider::PRIORITY_USER
-          )
-          button.signal_connect 'clicked' do |_|
-            puts 'Hello World!!'
-          end
-          grid.attach(button, col, row, 1, 1)
-        end
-      end
-
-      window.show_all
+      game_phase_updated
     end
-
-    @presenter = AppPresenter.new(self)
-
-    @state = {
-      turn: PLAYER_1,
-      game_type: CONNECT_4,
-      game_phase: MENU,
-      board_data: [],
-      winner: nil
-    }
-
-    game_phase_updated
   end
 
   def update_turn(turn)
