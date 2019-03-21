@@ -4,6 +4,10 @@ require 'observer'
 class GameOverView
   include Observable
 
+  def initialize(window)
+    @window = window # Reference to the application window
+  end
+
   def draw(winner) end
 
   def on_click(element)

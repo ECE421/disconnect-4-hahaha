@@ -7,16 +7,16 @@ require_relative 'main_menu/main_menu_view'
 
 # Presenter class for the AppModel
 class AppPresenter
-  def initialize(model)
-    @main_menu_view = MainMenuView.new
+  def initialize(model, window)
+    @main_menu_view = MainMenuView.new(window)
     @main_menu_presenter = MainMenuPresenter.new(model)
     @main_menu_view.add_observer(@main_menu_presenter)
 
-    @game_board_view = GameBoardView.new
+    @game_board_view = GameBoardView.new(window)
     @game_board_presenter = GameBoardPresenter.new(model)
     @game_board_view.add_observer(@game_board_presenter)
 
-    @game_over_view = GameOverView.new
+    @game_over_view = GameOverView.new(window)
     @game_over_presenter = GameOverPresenter.new(model)
     @game_over_view.add_observer(@game_over_presenter)
   end
