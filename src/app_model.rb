@@ -41,8 +41,7 @@ class AppModel
         type: CONNECT_4,
         mode: PLAYER_PLAYER,
         phase: MENU,
-        board_data: Array.new(6) { Array.new(7, 0) },
-        winner: nil
+        board_data: Array.new(6) { Array.new(7, 0) }
       }
 
       @presenter.game_phase_updated(@state)
