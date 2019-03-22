@@ -101,11 +101,11 @@ class AppModel
   end
 
   def connect_4_game_won?
-    connect_4_horizontal? || connect_4_vertical?
+    connect_4_horizontal? || connect_4_vertical? || connect_4_left_diagonal? || connect_4_right_diagonal?
   end
 
   def toot_and_otto_game_won?
-    toot_and_otto_horizontal? || toot_and_otto_vertical?
+    toot_and_otto_horizontal? || toot_and_otto_vertical? || toot_and_otto_left_diagonal? || toot_and_otto_right_diagonal?
   end
 
   def connect_4_vertical?
@@ -140,11 +140,27 @@ class AppModel
     false
   end
 
+  def connect_4_left_diagonal?
+    false
+  end
+
+  def connect_4_right_diagonal?
+    false
+  end
+
   def toot_and_otto_vertical?
     false
   end
 
   def toot_and_otto_horizontal?
+    false
+  end
+
+  def toot_and_otto_left_diagonal?
+    false
+  end
+
+  def toot_and_otto_right_diagonal?
     false
   end
 end
