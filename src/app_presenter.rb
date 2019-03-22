@@ -35,7 +35,7 @@ class AppPresenter
     elsif state[:phase] == AppModel::IN_PROGRESS
       @game_board_view.draw(state[:board_data])
     elsif state[:phase] == AppModel::GAME_OVER
-      @game_over_view.draw(state[:turn])
+      @game_over_view.draw(state[:result])
     end
   end
 end
