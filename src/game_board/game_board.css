@@ -1,0 +1,7 @@
+button {
+  background-image: image(grey);
+}
+
+button:hover {
+  background-image: image(purple);
+}
