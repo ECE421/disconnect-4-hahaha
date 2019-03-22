@@ -1,6 +1,6 @@
 require 'observer'
 
-# View that represents that playable game board
+# View that represents the game board
 class GameBoardView
   include Observable
 
@@ -8,7 +8,7 @@ class GameBoardView
     @window = window # Reference to the application window
 
     @column_style = Gtk::CssProvider.new
-    @column_style.load(data: 'button {opacity: 0;} button:hover {background-image: image(purple);}')
+    @column_style.load(data: 'button {background-image: image(grey); opacity: 0;} button:hover {opacity: 0.5;}')
 
     @empty_token_style = Gtk::CssProvider.new
     @empty_token_style.load(data: 'button {background-image: image(white);}')
