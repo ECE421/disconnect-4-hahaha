@@ -7,8 +7,8 @@ class AppModel
   attr_reader(:app)
 
   # Player turns
-  PLAYER_1 = 1
-  PLAYER_2 = 2
+  PLAYER_1_TURN = 1
+  PLAYER_2_TURN = 2
 
   # Game types
   CONNECT_4 = 0
@@ -42,8 +42,9 @@ class AppModel
 
       @presenter = AppPresenter.new(self, window)
 
+      # Initial game state
       @state = {
-        turn: PLAYER_1,
+        turn: PLAYER_1_TURN,
         type: CONNECT_4,
         mode: PLAYER_PLAYER,
         phase: MENU,
@@ -51,7 +52,7 @@ class AppModel
         result: NO_RESULT_YET
       }
 
-      @presenter.game_phase_updated(@state)
+      @presenter.game_phase_updated(@state) # Start the game at the main menu
     end
   end
 
@@ -93,10 +94,10 @@ class AppModel
     if result != NO_RESULT_YET
       @state[:result] = result
       update_game_phase(GAME_OVER)
-    elsif @state[:turn] == PLAYER_1 && token_played
-      update_turn(PLAYER_2)
-    elsif @state[:turn] == PLAYER_2 && token_played
-      update_turn(PLAYER_1)
+    elsif @state[:turn] == PLAYER_1_TURN && token_played
+      update_turn(PLAYER_2_TURN)
+    elsif @state[:turn] == PLAYER_2_TURN && token_played
+      update_turn(PLAYER_1_TURN)
     elsif !token_played
       update_turn(@state[:turn]) # Column was full, try again
     end
@@ -111,7 +112,7 @@ class AppModel
   end
 
   def connect_4_game_result
-    @state[:turn] if connect_4_horizontal? || connect_4_vertical? || connect_4_left_diagonal? || connect_4_right_diagonal?
+    @state[:turn] if connect_4_horizontal? || connect_4_vertical? || connect_4_diagonal?
     TIE if connect_4_tie?
     NO_RESULT_YET
   end
@@ -163,6 +164,10 @@ class AppModel
       end
     end
     false
+  end
+
+  def connect_4_diagonal?
+    connect_4_left_diagonal? || connect_4_right_diagonal?
   end
 
   def connect_4_left_diagonal?
