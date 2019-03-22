@@ -80,12 +80,16 @@ class AppModel
       break
     end
 
-    # TODO: Check win condition
-
-    if @state[:turn] == PLAYER_1
+    if game_won?
+      update_game_phase(GAME_OVER)
+    elsif @state[:turn] == PLAYER_1
       update_turn(PLAYER_2)
     elsif @state[:turn] == PLAYER_2
       update_turn(PLAYER_1)
     end
+  end
+
+  def game_won?
+    false
   end
 end
