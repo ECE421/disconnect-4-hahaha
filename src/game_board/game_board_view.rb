@@ -9,20 +9,16 @@ class GameBoardView
   end
 
   def draw(board_data, turn)
-    # Here we construct the container that is going pack our buttons
-    grid = Gtk::Grid.new
-    @window.add(grid)
-
     css_provider = Gtk::CssProvider.new
     css_provider.load(data: File.read('./src/game_board/game_board.css'))
+
+    grid = Gtk::Grid.new
+    @window.add(grid)
 
     (0..6).each do |col|
       button = Gtk::Button.new
       button.set_size_request(100, 600)
-      button.style_context.add_provider(
-        css_provider,
-        Gtk::StyleProvider::PRIORITY_USER
-      )
+      button.style_context.add_provider(css_provider, Gtk::StyleProvider::PRIORITY_USER)
       button.signal_connect('clicked') do |_|
         changed
         notify_observers('column_clicked', col)

@@ -4,8 +4,10 @@ class GameBoardPresenter
     @model = model
   end
 
-  def update(data)
-    # TODO
-    # @model.update_turn(data)
+  def update(signal, *data)
+    if signal == 'column_clicked'
+      column_index = data[0]
+      puts(column_index)
+    end
   end
 end
