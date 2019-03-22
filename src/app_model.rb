@@ -71,20 +71,24 @@ class AppModel
   end
 
   def place_token(column_index)
+    token_played = false
     Matrix[*@state[:board_data]].column(column_index).to_a.reverse.each_with_index do |element, reverse_index|
       next unless element.zero?
 
       row_index = (@state[:board_data].length - 1) - reverse_index
       @state[:board_data][row_index][column_index] = @state[:turn]
+      token_played = true
       break
     end
 
     if game_won?
       update_game_phase(GAME_OVER)
-    elsif @state[:turn] == PLAYER_1
+    elsif @state[:turn] == PLAYER_1 && token_played
       update_turn(PLAYER_2)
-    elsif @state[:turn] == PLAYER_2
+    elsif @state[:turn] == PLAYER_2 && token_played
       update_turn(PLAYER_1)
+    elsif !token_played
+      update_turn(@state[:turn]) # Column was full, try again
     end
   end
 
