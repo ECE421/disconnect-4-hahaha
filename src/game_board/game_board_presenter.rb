@@ -4,10 +4,9 @@ class GameBoardPresenter
     @model = model
   end
 
-  def update(signal, *data)
-    if signal == 'column_clicked'
-      column_index = data[0]
-      puts(column_index)
-    end
+  def update(signal, column_index)
+    raise ArgumentError unless signal == 'column_clicked'
+
+    @model.place_token(column_index)
   end
 end

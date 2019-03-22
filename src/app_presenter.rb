@@ -24,6 +24,7 @@ class AppPresenter
   end
 
   def turn_updated(state)
+    @window.each { |child| @window.remove(child) }
     @game_board_view.draw(state[:board_data])
   end
 

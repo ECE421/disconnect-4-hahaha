@@ -30,12 +30,11 @@ class GameBoardView
       (0..5).each do |row|
         cell = Gtk::Button.new
         cell.set_size_request(100, 100)
-        test_index = col + row
-        if (test_index % 3).zero?
+        if (board_data[row][col]).zero?
           cell.style_context.add_provider(@empty_token_style, Gtk::StyleProvider::PRIORITY_USER)
-        elsif test_index % 3 == 1
+        elsif board_data[row][col] == 1
           cell.style_context.add_provider(@token_1_style, Gtk::StyleProvider::PRIORITY_USER)
-        elsif test_index % 3 == 2
+        elsif board_data[row][col] == 2
           cell.style_context.add_provider(@token_2_style, Gtk::StyleProvider::PRIORITY_USER)
         end
         cell_grid.attach(cell, col, row, 1, 1)
