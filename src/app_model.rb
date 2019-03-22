@@ -101,10 +101,50 @@ class AppModel
   end
 
   def connect_4_game_won?
-    false
+    connect_4_horizontal? || connect_4_vertical?
   end
 
   def toot_and_otto_game_won?
+    toot_and_otto_horizontal? || toot_and_otto_vertical?
+  end
+
+  def connect_4_vertical?
+    Matrix[*@state[:board_data]].column_vectors.each do |column|
+      consecutive = 0
+      column.each do |element|
+        if element != @state[:turn]
+          consecutive = 0
+          next
+        end
+
+        consecutive += 1
+        return true if consecutive == 4
+      end
+    end
+    false
+  end
+
+  def connect_4_horizontal?
+    @state[:board_data].each do |row|
+      consecutive = 0
+      row.each do |element|
+        if element != @state[:turn]
+          consecutive = 0
+          next
+        end
+
+        consecutive += 1
+        return true if consecutive == 4
+      end
+    end
+    false
+  end
+
+  def toot_and_otto_vertical?
+    false
+  end
+
+  def toot_and_otto_horizontal?
     false
   end
 end
