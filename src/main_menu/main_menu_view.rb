@@ -22,6 +22,7 @@ class MainMenuView
     game_type_combo_box.append_text('OTTO TOOT')
     game_type_combo_box.set_active(0)
     game_type_combo_box.signal_connect('changed') do |_, _|
+      changed
       notify_observers('game_type_changed', type: game_type_combo_box.active)
     end
     layout.add(game_type_combo_box)
@@ -33,6 +34,7 @@ class MainMenuView
     game_mode_combo_box.append_text('CPU vs. CPU')
     game_mode_combo_box.set_active(0)
     game_mode_combo_box.signal_connect('changed') do |_, _|
+      changed
       notify_observers('game_mode_changed', mode: game_mode_combo_box.active)
     end
     layout.add(game_mode_combo_box)
