@@ -8,7 +8,7 @@ class GameBoardView
     @window = window # Reference to the application window
   end
 
-  def draw(board_data, turn)
+  def draw(board_data)
     css_provider = Gtk::CssProvider.new
     css_provider.load(data: File.read('./src/game_board/game_board.css'))
 
