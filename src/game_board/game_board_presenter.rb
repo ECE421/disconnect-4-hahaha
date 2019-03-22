@@ -4,8 +4,9 @@ class GameBoardPresenter
     @model = model
   end
 
-  def update(data)
-    # TODO
-    # @model.update_turn(data)
+  def update(signal, column_index)
+    raise ArgumentError unless signal == 'column_clicked'
+
+    @model.place_token(column_index)
   end
 end

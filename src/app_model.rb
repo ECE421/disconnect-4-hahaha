@@ -1,4 +1,5 @@
 require 'gtk3'
+require 'matrix'
 require_relative 'app_presenter'
 
 # Main model that holds the data, state, and business logic of the app
@@ -6,8 +7,8 @@ class AppModel
   attr_reader(:app)
 
   # Player turns
-  PLAYER_1 = 0
-  PLAYER_2 = 1
+  PLAYER_1 = 1
+  PLAYER_2 = 2
 
   # Game types
   CONNECT_4 = 0
@@ -40,8 +41,7 @@ class AppModel
         type: CONNECT_4,
         mode: PLAYER_PLAYER,
         phase: MENU,
-        board_data: [],
-        winner: nil
+        board_data: Array.new(6) { Array.new(7, 0) }
       }
 
       @presenter.game_phase_updated(@state)
@@ -68,5 +68,39 @@ class AppModel
   def update_game_phase(phase)
     @state[:phase] = phase
     @presenter.game_phase_updated(@state)
+  end
+
+  def place_token(column_index)
+    Matrix[*@state[:board_data]].column(column_index).to_a.reverse.each_with_index do |element, reverse_index|
+      next unless element.zero?
+
+      row_index = (@state[:board_data].length - 1) - reverse_index
+      @state[:board_data][row_index][column_index] = @state[:turn]
+      break
+    end
+
+    if game_won?
+      update_game_phase(GAME_OVER)
+    elsif @state[:turn] == PLAYER_1
+      update_turn(PLAYER_2)
+    elsif @state[:turn] == PLAYER_2
+      update_turn(PLAYER_1)
+    end
+  end
+
+  def game_won?
+    if @state[:type] == CONNECT_4
+      connect_4_game_won?
+    elsif @state[:type] == OTTO_TOOT
+      otto_toot_game_won?
+    end
+  end
+
+  def connect_4_game_won?
+    false
+  end
+
+  def otto_toot_game_won?
+    false
   end
 end

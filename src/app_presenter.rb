@@ -24,7 +24,8 @@ class AppPresenter
   end
 
   def turn_updated(state)
-    @game_board_view.draw(state[:board_data], state[:turn])
+    @window.each { |child| @window.remove(child) }
+    @game_board_view.draw(state[:board_data])
   end
 
   def game_phase_updated(state)
@@ -32,9 +33,9 @@ class AppPresenter
     if state[:phase] == AppModel::MENU
       @main_menu_view.draw
     elsif state[:phase] == AppModel::IN_PROGRESS
-      @game_board_view.draw(state[:board_data], state[:turn])
+      @game_board_view.draw(state[:board_data])
     elsif state[:phase] == AppModel::GAME_OVER
-      @game_over_view.draw(state[:winner])
+      @game_over_view.draw(state[:turn])
     end
   end
 end
