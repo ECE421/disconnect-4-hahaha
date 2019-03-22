@@ -39,6 +39,7 @@ class MainMenuView
 
     start_game_button = Gtk::Button.new(label: 'Start Game')
     start_game_button.signal_connect('clicked') do |_, _|
+      changed
       notify_observers('start_game_clicked')
     end
     layout.add(start_game_button)

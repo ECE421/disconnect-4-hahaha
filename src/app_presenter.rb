@@ -8,6 +8,8 @@ require_relative 'main_menu/main_menu_view'
 # Presenter class for the AppModel
 class AppPresenter
   def initialize(model, window)
+    @window = window
+
     @main_menu_view = MainMenuView.new(window)
     @main_menu_presenter = MainMenuPresenter.new(model)
     @main_menu_view.add_observer(@main_menu_presenter)
@@ -26,11 +28,12 @@ class AppPresenter
   end
 
   def game_phase_updated(state)
-    if state[:game_phase] == AppModel::MENU
+    @window.each { |child| @window.remove(child) }
+    if state[:phase] == AppModel::MENU
       @main_menu_view.draw
-    elsif state[:game_phase] == AppModel::IN_PROGRESS
+    elsif state[:phase] == AppModel::IN_PROGRESS
       @game_board_view.draw(state[:board_data], state[:turn])
-    elsif state[:game_phase] == AppModel::GAME_OVER
+    elsif state[:phase] == AppModel::GAME_OVER
       @game_over_view.draw(state[:winner])
     end
   end

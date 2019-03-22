@@ -37,9 +37,9 @@ class AppModel
 
       @state = {
         turn: PLAYER_1,
-        game_type: CONNECT_4,
-        game_mode: PLAYER_PLAYER,
-        game_phase: MENU,
+        type: CONNECT_4,
+        mode: PLAYER_PLAYER,
+        phase: MENU,
         board_data: [],
         winner: nil
       }
