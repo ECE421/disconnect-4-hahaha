@@ -112,9 +112,7 @@ class AppModel
 
   def connect_4_game_result
     @state[:turn] if connect_4_horizontal? || connect_4_vertical? || connect_4_left_diagonal? || connect_4_right_diagonal?
-
     TIE if connect_4_tie?
-
     NO_RESULT_YET
   end
 
@@ -180,35 +178,7 @@ class AppModel
       consecutive_toot = ''
       consecutive_otto = ''
       row.each do |element|
-        if element.zero?
-          consecutive_toot = ''
-          consecutive_otto = ''
-          next
-        elsif element == 1
-          if %W[#{+''} too].include?(consecutive_toot)
-            consecutive_toot += 't'
-          else
-            consecutive_toot = ''
-          end
-
-          if %w[o ot].include?(consecutive_otto)
-            consecutive_otto += 't'
-          else
-            consecutive_otto = ''
-          end
-        elsif element == 2
-          if %w[t to].include?(consecutive_toot)
-            consecutive_toot += 'o'
-          else
-            consecutive_toot = ''
-          end
-
-          if %W[#{+''} ott].include?(consecutive_otto)
-            consecutive_otto += 'o'
-          else
-            consecutive_otto = ''
-          end
-        end
+        consecutive_toot, consecutive_otto = toot_and_otto_increment(consecutive_toot, consecutive_otto, element)
         return TIE if consecutive_toot == 'toot' && consecutive_otto == 'otto'
         return PLAYER_1_WINS if consecutive_toot == 'toot'
         return PLAYER_2_WINS if consecutive_otto == 'otto'
@@ -218,6 +188,16 @@ class AppModel
   end
 
   def toot_and_otto_vertical
+    Matrix[*@state[:board_data]].column_vectors.each do |column|
+      consecutive_toot = ''
+      consecutive_otto = ''
+      column.each do |element|
+        consecutive_toot, consecutive_otto = toot_and_otto_increment(consecutive_toot, consecutive_otto, element)
+        return TIE if consecutive_toot == 'toot' && consecutive_otto == 'otto'
+        return PLAYER_1_WINS if consecutive_toot == 'toot'
+        return PLAYER_2_WINS if consecutive_otto == 'otto'
+      end
+    end
     NO_RESULT_YET
   end
 
@@ -227,5 +207,37 @@ class AppModel
 
   def toot_and_otto_right_diagonal
     NO_RESULT_YET
+  end
+
+  def toot_and_otto_increment(consecutive_toot, consecutive_otto, element)
+    return ['', ''] if element.zero?
+
+    if element == 1
+      if %W[#{+''} too].include?(consecutive_toot)
+        consecutive_toot += 't'
+      else
+        consecutive_toot = ''
+      end
+
+      if %w[o ot].include?(consecutive_otto)
+        consecutive_otto += 't'
+      else
+        consecutive_otto = ''
+      end
+    elsif element == 2
+      if %w[t to].include?(consecutive_toot)
+        consecutive_toot += 'o'
+      else
+        consecutive_toot = ''
+      end
+
+      if %W[#{+''} ott].include?(consecutive_otto)
+        consecutive_otto += 'o'
+      else
+        consecutive_otto = ''
+      end
+    end
+
+    [consecutive_toot, consecutive_otto]
   end
 end
