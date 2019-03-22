@@ -90,6 +90,18 @@ class AppModel
   end
 
   def game_won?
+    if @state[:type] == CONNECT_4
+      connect_4_game_won?
+    elsif @state[:type] == OTTO_TOOT
+      otto_toot_game_won?
+    end
+  end
+
+  def connect_4_game_won?
+    false
+  end
+
+  def otto_toot_game_won?
     false
   end
 end
