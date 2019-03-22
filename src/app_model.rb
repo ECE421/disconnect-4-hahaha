@@ -12,7 +12,7 @@ class AppModel
 
   # Game types
   CONNECT_4 = 0
-  OTTO_TOOT = 1
+  TOOT_AND_OTTO = 1
 
   # Game modes
   PLAYER_PLAYER = 0
@@ -95,8 +95,8 @@ class AppModel
   def game_won?
     if @state[:type] == CONNECT_4
       connect_4_game_won?
-    elsif @state[:type] == OTTO_TOOT
-      otto_toot_game_won?
+    elsif @state[:type] == TOOT_AND_OTTO
+      toot_and_otto_game_won?
     end
   end
 
@@ -104,7 +104,7 @@ class AppModel
     false
   end
 
-  def otto_toot_game_won?
+  def toot_and_otto_game_won?
     false
   end
 end
