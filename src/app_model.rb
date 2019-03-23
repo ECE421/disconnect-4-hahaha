@@ -138,6 +138,7 @@ class AppModel
         return false if element.zero?
       end
     end
+    true
   end
 
   def connect_4_horizontal?
