@@ -112,8 +112,10 @@ class AppModel
   end
 
   def connect_4_game_result
-    @state[:turn] if connect_4_horizontal? || connect_4_vertical? || connect_4_diagonal?
-    TIE if connect_4_tie?
+    return @state[:turn] if connect_4_horizontal? || connect_4_vertical? || connect_4_diagonal?
+
+    return TIE if connect_4_tie?
+
     NO_RESULT_YET
   end
 
