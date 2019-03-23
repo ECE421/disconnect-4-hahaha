@@ -4,8 +4,7 @@ class GameOverPresenter
     @model = model
   end
 
-  def update(data)
-    # TODO
-    # @model.update_turn(data)
+  def update(_)
+    @model.back_to_main_menu
   end
 end
