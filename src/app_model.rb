@@ -259,10 +259,12 @@ class AppModel
     NO_RESULT_YET
   end
 
+  # TODO
   def toot_and_otto_left_diagonal
     NO_RESULT_YET
   end
 
+  # TODO
   def toot_and_otto_right_diagonal
     NO_RESULT_YET
   end
