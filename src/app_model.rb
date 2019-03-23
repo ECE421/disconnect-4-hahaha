@@ -173,10 +173,56 @@ class AppModel
   end
 
   def connect_4_left_diagonal?
+    start_indices = [[2, 0], [1, 0], [0, 0], [0, 1], [0, 2], [0, 3]]
+    start_indices.each do |index|
+      left_diagonal = []
+      i = index[0]
+      j = index[1]
+
+      until i == 6 || j == 7
+        left_diagonal.push(@state[:board_data][i][j])
+        i += 1
+        j += 1
+      end
+
+      consecutive = 0
+      left_diagonal.each do |element|
+        if element != @state[:turn]
+          consecutive = 0
+          next
+        end
+
+        consecutive += 1
+        return true if consecutive == 4
+      end
+    end
     false
   end
 
   def connect_4_right_diagonal?
+    start_indices = [[0, 3], [0, 4], [0, 5], [0, 6], [1, 6], [2, 6]]
+    start_indices.each do |index|
+      right_diagonal = []
+      i = index[0]
+      j = index[1]
+
+      until i == 6 || j.zero?
+        right_diagonal.push(@state[:board_data][i][j])
+        i += 1
+        j += 1
+      end
+
+      consecutive = 0
+      right_diagonal.each do |element|
+        if element != @state[:turn]
+          consecutive = 0
+          next
+        end
+
+        consecutive += 1
+        return true if consecutive == 4
+      end
+    end
     false
   end
 
