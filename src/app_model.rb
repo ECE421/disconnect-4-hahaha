@@ -73,6 +73,15 @@ class AppModel
     update_game_phase(IN_PROGRESS)
   end
 
+  def back_to_main_menu
+    @state[:turn] = PLAYER_1_TURN
+    @state[:type] = CONNECT_4
+    @state[:mode] = PLAYER_PLAYER
+    @state[:board_data] = Array.new(6) { Array.new(7, 0) }
+    @state[:result] = NO_RESULT_YET
+    update_game_phase(MENU)
+  end
+
   def update_game_phase(phase)
     @state[:phase] = phase
     @presenter.game_phase_updated(@state)

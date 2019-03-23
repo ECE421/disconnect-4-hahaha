@@ -31,7 +31,7 @@ class AppPresenter
   def game_phase_updated(state)
     @window.each { |child| @window.remove(child) }
     if state[:phase] == AppModel::MENU
-      @main_menu_view.draw
+      @main_menu_view.draw(state[:type], state[:mode])
     elsif state[:phase] == AppModel::IN_PROGRESS
       @game_board_view.draw(state[:board_data])
     elsif state[:phase] == AppModel::GAME_OVER

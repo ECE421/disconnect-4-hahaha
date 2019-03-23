@@ -4,7 +4,7 @@ class MainMenuPresenter
     @model = model
   end
 
-  def update(signal, *data)
+  def update(signal, data)
     if signal == 'game_type_changed'
       @model.update_game_type(data[:type])
     elsif signal == 'game_mode_changed'
