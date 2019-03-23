@@ -133,7 +133,11 @@ class AppModel
   end
 
   def connect_4_tie?
-    false
+    @state[:board_data].each do |row|
+      row.each do |element|
+        return false if element.zero?
+      end
+    end
   end
 
   def connect_4_horizontal?
