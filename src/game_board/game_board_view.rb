@@ -18,31 +18,24 @@ class GameBoardView
 
     @token_2_style = Gtk::CssProvider.new
     @token_2_style.load(data: 'button {background-image: image(yellow);}')
-  end
 
-  def draw(board_data)
-    layout = Gtk::Fixed.new
+    @cells = Array.new(6) { Array.new(7, nil) }
+    @layout = Gtk::Fixed.new
 
     cell_grid = Gtk::Grid.new
-    layout.put(cell_grid, 0, 0)
+    @layout.put(cell_grid, 0, 0)
 
     (0..6).each do |col|
       (0..5).each do |row|
         cell = Gtk::Button.new
         cell.set_size_request(100, 100)
-        if (board_data[row][col]).zero?
-          cell.style_context.add_provider(@empty_token_style, Gtk::StyleProvider::PRIORITY_USER)
-        elsif board_data[row][col] == 1
-          cell.style_context.add_provider(@token_1_style, Gtk::StyleProvider::PRIORITY_USER)
-        elsif board_data[row][col] == 2
-          cell.style_context.add_provider(@token_2_style, Gtk::StyleProvider::PRIORITY_USER)
-        end
+        @cells[row][col] = cell
         cell_grid.attach(cell, col, row, 1, 1)
       end
     end
 
     column_grid = Gtk::Grid.new
-    layout.put(column_grid, 0, 0)
+    @layout.put(column_grid, 0, 0)
 
     (0..6).each do |column_index|
       column = Gtk::Button.new
@@ -54,8 +47,25 @@ class GameBoardView
       end
       column_grid.attach(column, column_index, 0, 1, 1)
     end
+  end
 
-    @window.add(layout)
+  def bind_layout
+    @window.add(@layout)
+  end
+
+  def draw(board_data)
+    (0..6).each do |col|
+      (0..5).each do |row|
+        if (board_data[row][col]).zero?
+          @cells[row][col].style_context.add_provider(@empty_token_style, Gtk::StyleProvider::PRIORITY_USER)
+        elsif board_data[row][col] == 1
+          @cells[row][col].style_context.add_provider(@token_1_style, Gtk::StyleProvider::PRIORITY_USER)
+        elsif board_data[row][col] == 2
+          @cells[row][col].style_context.add_provider(@token_2_style, Gtk::StyleProvider::PRIORITY_USER)
+        end
+      end
+    end
+
     @window.show_all
   end
 end
