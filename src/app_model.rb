@@ -130,13 +130,13 @@ class AppModel
 
   def toot_and_otto_game_result
     result = toot_and_otto_horizontal
-    result unless result == NO_RESULT_YET
+    return result unless result == NO_RESULT_YET
 
     result = toot_and_otto_vertical
-    result unless result == NO_RESULT_YET
+    return result unless result == NO_RESULT_YET
 
     result = toot_and_otto_left_diagonal
-    result unless result == NO_RESULT_YET
+    return result unless result == NO_RESULT_YET
 
     toot_and_otto_right_diagonal
   end
