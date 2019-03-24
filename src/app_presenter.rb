@@ -24,7 +24,7 @@ class AppPresenter
   end
 
   def turn_updated(state)
-    @game_board_view.draw(state[:board_data])
+    @game_board_view.draw(state[:board_data], state[:type])
   end
 
   def game_phase_updated(state)
@@ -33,7 +33,7 @@ class AppPresenter
       @main_menu_view.draw(state[:type], state[:mode])
     elsif state[:phase] == AppModel::IN_PROGRESS
       @game_board_view.bind_layout
-      @game_board_view.draw(state[:board_data])
+      @game_board_view.draw(state[:board_data], state[:type])
     elsif state[:phase] == AppModel::GAME_OVER
       @game_over_view.draw(state[:result])
     end
