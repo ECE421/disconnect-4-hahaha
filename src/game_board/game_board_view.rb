@@ -10,14 +10,20 @@ class GameBoardView
     @column_style = Gtk::CssProvider.new
     @column_style.load(data: 'button {background-image: image(grey); opacity: 0;} button:hover {opacity: 0.5;}')
 
-    @empty_token_style = Gtk::CssProvider.new
-    @empty_token_style.load(data: 'button {background-image: image(white);}')
+    @empty_cell = Gtk::CssProvider.new
+    @empty_cell.load(data: 'button {background-image: image(white);}')
 
-    @token_1_style = Gtk::CssProvider.new
-    @token_1_style.load(data: 'button {background-image: image(red);}')
+    @red_token = Gtk::CssProvider.new
+    @red_token.load(data: 'button {background-image: image(red);}')
 
-    @token_2_style = Gtk::CssProvider.new
-    @token_2_style.load(data: 'button {background-image: image(yellow);}')
+    @yellow_token = Gtk::CssProvider.new
+    @yellow_token.load(data: 'button {background-image: image(yellow);}')
+
+    @t_token = Gtk::CssProvider.new
+    @t_token.load(data: "button {background-image: url(\"./src/game_board/t.png\");}")
+
+    @o_token = Gtk::CssProvider.new
+    @o_token.load(data: "button {background-image: url(\"./src/game_board/o.png\");}")
 
     @cells = Array.new(6) { Array.new(7, nil) }
     @layout = Gtk::Fixed.new
@@ -53,15 +59,19 @@ class GameBoardView
     @window.add(@layout)
   end
 
-  def draw(board_data)
+  def draw(board_data, game_type)
     (0..6).each do |col|
       (0..5).each do |row|
         if (board_data[row][col]).zero?
-          @cells[row][col].style_context.add_provider(@empty_token_style, Gtk::StyleProvider::PRIORITY_USER)
-        elsif board_data[row][col] == 1
-          @cells[row][col].style_context.add_provider(@token_1_style, Gtk::StyleProvider::PRIORITY_USER)
-        elsif board_data[row][col] == 2
-          @cells[row][col].style_context.add_provider(@token_2_style, Gtk::StyleProvider::PRIORITY_USER)
+          @cells[row][col].style_context.add_provider(@empty_cell, Gtk::StyleProvider::PRIORITY_USER)
+        elsif board_data[row][col] == 1 && game_type == AppModel::CONNECT_4
+          @cells[row][col].style_context.add_provider(@red_token, Gtk::StyleProvider::PRIORITY_USER)
+        elsif board_data[row][col] == 1 && game_type == AppModel::TOOT_AND_OTTO
+          @cells[row][col].style_context.add_provider(@t_token, Gtk::StyleProvider::PRIORITY_USER)
+        elsif board_data[row][col] == 2 && game_type == AppModel::CONNECT_4
+          @cells[row][col].style_context.add_provider(@yellow_token, Gtk::StyleProvider::PRIORITY_USER)
+        elsif board_data[row][col] == 2 && game_type == AppModel::TOOT_AND_OTTO
+          @cells[row][col].style_context.add_provider(@o_token, Gtk::StyleProvider::PRIORITY_USER)
         end
       end
     end

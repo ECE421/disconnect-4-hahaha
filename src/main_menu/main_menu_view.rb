@@ -19,7 +19,7 @@ class MainMenuView
 
     game_type_combo_box = Gtk::ComboBoxText.new
     game_type_combo_box.append_text('Connect 4')
-    game_type_combo_box.append_text('OTTO TOOT')
+    game_type_combo_box.append_text('Toot and Otto')
     game_type_combo_box.set_active(type)
     game_type_combo_box.signal_connect('changed') do |_, _|
       changed

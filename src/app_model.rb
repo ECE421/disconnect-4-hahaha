@@ -130,13 +130,13 @@ class AppModel
 
   def toot_and_otto_game_result
     result = toot_and_otto_horizontal
-    result unless result == NO_RESULT_YET
+    return result unless result == NO_RESULT_YET
 
     result = toot_and_otto_vertical
-    result unless result == NO_RESULT_YET
+    return result unless result == NO_RESULT_YET
 
     result = toot_and_otto_left_diagonal
-    result unless result == NO_RESULT_YET
+    return result unless result == NO_RESULT_YET
 
     toot_and_otto_right_diagonal
   end
@@ -220,10 +220,10 @@ class AppModel
       i = index[0]
       j = index[1]
 
-      until i == 6 || j.zero?
+      until i == 6 || j == -1
         right_diagonal.push(@state[:board_data][i][j])
         i += 1
-        j += 1
+        j -= 1
       end
 
       consecutive = 0
@@ -268,13 +268,53 @@ class AppModel
     NO_RESULT_YET
   end
 
-  # TODO
   def toot_and_otto_left_diagonal
+    start_indices = [[2, 0], [1, 0], [0, 0], [0, 1], [0, 2], [0, 3]]
+    start_indices.each do |index|
+      left_diagonal = []
+      i = index[0]
+      j = index[1]
+
+      until i == 6 || j == 7
+        left_diagonal.push(@state[:board_data][i][j])
+        i += 1
+        j += 1
+      end
+
+      consecutive_toot = ''
+      consecutive_otto = ''
+      left_diagonal.each do |element|
+        consecutive_toot, consecutive_otto = toot_and_otto_increment(consecutive_toot, consecutive_otto, element)
+        return TIE if consecutive_toot == 'toot' && consecutive_otto == 'otto'
+        return PLAYER_1_WINS if consecutive_toot == 'toot'
+        return PLAYER_2_WINS if consecutive_otto == 'otto'
+      end
+    end
     NO_RESULT_YET
   end
 
-  # TODO
   def toot_and_otto_right_diagonal
+    start_indices = [[0, 3], [0, 4], [0, 5], [0, 6], [1, 6], [2, 6]]
+    start_indices.each do |index|
+      right_diagonal = []
+      i = index[0]
+      j = index[1]
+
+      until i == 6 || j == -1
+        right_diagonal.push(@state[:board_data][i][j])
+        i += 1
+        j -= 1
+      end
+
+      consecutive_toot = ''
+      consecutive_otto = ''
+      right_diagonal.each do |element|
+        consecutive_toot, consecutive_otto = toot_and_otto_increment(consecutive_toot, consecutive_otto, element)
+        return TIE if consecutive_toot == 'toot' && consecutive_otto == 'otto'
+        return PLAYER_1_WINS if consecutive_toot == 'toot'
+        return PLAYER_2_WINS if consecutive_otto == 'otto'
+      end
+    end
     NO_RESULT_YET
   end
 
