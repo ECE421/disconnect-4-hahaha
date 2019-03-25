@@ -132,7 +132,9 @@ class AppModel
 
       row_index = @state[:board_data].length - reverse_index
       @state[:board_data][row_index][column_index] = 0
+      return true
     end
+    @state[:board_data][0][column_index] = 0
   end
 
   # our cpu algorithm works as follows
