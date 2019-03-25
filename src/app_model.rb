@@ -18,7 +18,6 @@ class AppModel
   PLAYER_PLAYER = 0
   PLAYER_CPU = 1
   CPU_PLAYER = 2
-  CPU_CPU = 3
 
   # Game phases
   MENU = 0
