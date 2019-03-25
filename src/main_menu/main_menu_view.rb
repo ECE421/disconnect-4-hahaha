@@ -1,8 +1,9 @@
 require 'observer'
+require 'readline'
 
 # View that represents the main menu screen
 class MainMenuView
-  include Observable
+  include(Observable)
 
   def initialize(window)
     @window = window # Reference to the application window
@@ -23,7 +24,7 @@ class MainMenuView
     game_type_combo_box.set_active(type)
     game_type_combo_box.signal_connect('changed') do |_, _|
       changed
-      notify_observers('game_type_changed', type: game_type_combo_box.active)
+      notify_observers('game_type_changed', game_type_combo_box.active)
     end
     layout.add(game_type_combo_box)
 
@@ -34,14 +35,14 @@ class MainMenuView
     game_mode_combo_box.set_active(mode)
     game_mode_combo_box.signal_connect('changed') do |_, _|
       changed
-      notify_observers('game_mode_changed', mode: game_mode_combo_box.active)
+      notify_observers('game_mode_changed', game_mode_combo_box.active)
     end
     layout.add(game_mode_combo_box)
 
     start_game_button = Gtk::Button.new(label: 'Start Game')
     start_game_button.signal_connect('clicked') do |_, _|
       changed
-      notify_observers('start_game_clicked', nil)
+      notify_observers('start_game', nil)
     end
     layout.add(start_game_button)
 
