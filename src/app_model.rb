@@ -88,15 +88,7 @@ class AppModel
   end
 
   def place_token(column_index)
-    token_played = false
-    Matrix[*@state[:board_data]].column(column_index).to_a.reverse.each_with_index do |element, reverse_index|
-      next unless element.zero?
-
-      row_index = (@state[:board_data].length - 1) - reverse_index
-      @state[:board_data][row_index][column_index] = @state[:turn]
-      token_played = true
-      break
-    end
+    token_played = board_place_token(column_index)
 
     result = game_result
 
@@ -104,21 +96,110 @@ class AppModel
       @state[:result] = result
       update_game_phase(GAME_OVER)
     elsif @state[:turn] == PLAYER_1_TURN && token_played
+      update_turn(PLAYER_2_TURN)
       if @state[:mode] == PLAYER_CPU
-        cpu_turn()
-      else
-        update_turn(PLAYER_2_TURN)
+        cpu_turn # cpu makes a move
+        update_turn(PLAYER_1_TURN) # gives turn back
       end
     elsif @state[:turn] == PLAYER_2_TURN && token_played
       update_turn(PLAYER_1_TURN)
+      if @state[:mode] == CPU_PLAYER
+        cpu_turn # cpu makes a move
+        update_turn(PLAYER_2_TURN) # gives turn back
+      end
     elsif !token_played
       update_turn(@state[:turn]) # Column was full, try again
     end
   end
 
+  def board_place_token(column_index)
+    Matrix[*@state[:board_data]].column(column_index).to_a.reverse.each_with_index do |element, reverse_index|
+      next unless element.zero?
+
+      row_index = (@state[:board_data].length - 1) - reverse_index
+      @state[:board_data][row_index][column_index] = @state[:turn]
+      return true
+    end
+    false
+  end
+
+  def board_remove_token(column_index)
+    Matrix[*@state[:board_data]].column(column_index).to_a.reverse.each_with_index do |element, reverse_index|
+      next unless element.zero?
+
+      row_index = @state[:board_data].length - reverse_index
+      @state[:board_data][row_index][column_index] = 0
+    end
+  end
+
   # our cpu algorithm works as follows
-  def cpu_turn()
-    
+  # 1. attempt to place a token in each column as current player (aggresion)
+  # if any token results in a win then make that placement
+  # 2. attempt to place a token in each column as opposite player (prevention)
+  # if any token results in a win then make that placement
+  # 3. if neither condition place token in longest vertical or horizontal (extension)
+  def cpu_turn
+    cpu_progress unless cpu_attempt || cpu_prevent # ruby craziness
+  end
+
+  # cpu_attempt works to try to win the game by placing a token in each column once and checking to see if any result in a win condition. it clears all unsuccessfull token attempts
+  def cpu_attempt
+    (0..6).each do |c|
+      token_placed = board_place_token(c)
+      if game_result != NO_RESULT_YET # full send
+        @state[:result] = game_result
+        update_game_phase(GAME_OVER)
+        return true
+      elsif token_placed # make sure token was placed before force delete
+        board_remove_token(c)
+      end
+    end
+    false
+  end
+
+  # cpu_prevent works to try and stop the other player from winning the game by placing a token in each column once as the other player and checking to see if any result in a win condition, if so then it places a token there as the cpu to prevent the win. it clears all unsuccessfull token attempts
+  def cpu_prevent
+    current_turn = @state[:turn]
+    @state[:turn] = current_turn == PLAYER_1_TURN ? PLAYER_2_TURN : PLAYER_1_TURN # pretend to be other player
+    (0..6).each do |c|
+      token_placed = board_place_token(c)
+      if game_result != NO_RESULT_YET
+        board_remove_token(c) # remove the winning move
+        @state[:turn] = current_turn # change back
+        board_place_token(c) # place token to block
+        return true
+      elsif token_placed # make sure token was placed before force delete
+        board_remove_token(c)
+      end
+    end
+    @state[:turn] = current_turn # remember to switch back
+    false
+  end
+
+  # cpu_progress works to progress the cpu to victory. it iterates all possible moves going left to right until it finds one that results in a win, it then erases all previous moves and places this move.
+  def cpu_progress
+    remove_array = []
+    next_move = nil
+    (0..3).each do |_i|
+      break if game_result != NO_RESULT_YET
+      (0..6).each do |c|
+        token_placed = board_place_token(c)
+        remove_array.push(c) if token_placed # add move for later deletion
+        if game_result != NO_RESULT_YET
+          next_move = c
+          break
+        end
+      end
+    end
+    remove_array.reverse_each do |c| # remove moves from our array 'stack'
+      board_remove_token(c)
+    end
+    if next_move # if we found a winning move do it
+      board_place_token(next_move)
+    else # otherwise look for a valid random move
+      move_made = false
+      move_made = board_place_token(rand(0..6)) until move_made
+    end
   end
 
   def game_result
