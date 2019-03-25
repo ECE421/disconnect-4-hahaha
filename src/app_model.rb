@@ -1,10 +1,11 @@
-require 'gtk3'
 require 'matrix'
-require_relative 'app_presenter'
+require 'observer'
 
 # Main model that holds the data, state, and business logic of the app
 class AppModel
-  attr_reader(:app)
+  include(Observable)
+
+  attr_reader(:app, :state)
 
   # Player turns
   PLAYER_1_TURN = 1
@@ -30,34 +31,44 @@ class AppModel
   PLAYER_2_WINS = 2
   TIE = 3
 
-  def initialize
-    @app = Gtk::Application.new('disconnect.four.hahaha', :flags_none)
+  def initialize(app, presenter)
+    # Initial game state
+    @state = {
+      turn: PLAYER_1_TURN,
+      type: CONNECT_4,
+      mode: PLAYER_PLAYER,
+      phase: MENU,
+      board_data: Array.new(6) { Array.new(7, 0) },
+      result: NO_RESULT_YET
+    }
 
-    @app.signal_connect('activate') do |application|
+    return if presenter.nil?
+
+    add_observer(presenter)
+    changed
+    notify_observers('attach_model', self)
+
+    return if app.nil?
+
+    @app = app
+
+    app.signal_connect('activate') do |application|
       window = Gtk::ApplicationWindow.new(application)
       window.set_title('Ruby Connect Games')
       window.set_size_request(400, 400)
       window.set_border_width(20)
 
-      @presenter = AppPresenter.new(self, window)
-
-      # Initial game state
-      @state = {
-        turn: PLAYER_1_TURN,
-        type: CONNECT_4,
-        mode: PLAYER_PLAYER,
-        phase: MENU,
-        board_data: Array.new(6) { Array.new(7, 0) },
-        result: NO_RESULT_YET
-      }
-
-      @presenter.game_phase_updated(@state) # Start the game at the main menu
+      changed
+      notify_observers('init_views', window)
+      changed
+      notify_observers('game_phase_updated', @state) # Start the game at the main menu
     end
   end
 
   def update_turn(turn)
     @state[:turn] = turn
-    @presenter.turn_updated(@state)
+    changed
+    notify_observers('turn_updated', @state)
   end
 
   def update_game_type(type)
@@ -87,7 +98,9 @@ class AppModel
 
   def update_game_phase(phase)
     @state[:phase] = phase
-    @presenter.game_phase_updated(@state)
+    changed
+    notify_observers('game_phase_updated', @state)
+    # @presenter.game_phase_updated(@state)
   end
 
   def place_token(column_index)
