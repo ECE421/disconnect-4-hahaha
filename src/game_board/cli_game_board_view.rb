@@ -45,9 +45,9 @@ class CLIGameBoardView
     valid_input = false
     until valid_input
       input = Readline.readline("Player #{state[:turn]}:", true)
-      if /([1-7])/.match?(input)
+      if %w[1 2 3 4 5 6 7].include?(input)
         valid_input = true
-        column_index = Integer(/([1-7])/.match(input)[0]) - 1
+        column_index = Integer(input) - 1
       else
         puts('Invalid command. Must input column number as: <integer> (1-7)')
       end
