@@ -20,6 +20,10 @@ class AppPresenter
       turn_updated(data[0])
     when 'game_phase_updated'
       game_phase_updated(data[0])
+    when 'game_type_updated'
+      game_type_updated(data[0])
+    when 'game_mode_updated'
+      game_mode_updated(data[0])
     else
       raise(ArgumentError)
     end
@@ -71,5 +75,19 @@ class AppPresenter
     elsif state[:phase] == AppModel::GAME_OVER
       @game_over_view.draw(state[:result])
     end
+  end
+
+  def game_type_updated(state)
+    return unless state[:interface] == AppModel::GUI
+
+    @window.each { |child| @window.remove(child) }
+    @main_menu_view.draw(state[:type], state[:mode])
+  end
+
+  def game_mode_updated(state)
+    return unless state[:interface] == AppModel::GUI
+
+    @window.each { |child| @window.remove(child) }
+    @main_menu_view.draw(state[:type], state[:mode])
   end
 end

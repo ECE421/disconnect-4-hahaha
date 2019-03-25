@@ -98,11 +98,16 @@ class AppModel
 
   def update_game_type(type)
     @state[:type] = type
+    changed
+    notify_observers('game_type_updated', @state)
   end
 
   def update_game_mode(mode)
     @state[:mode] = mode
     @state[:player_turn] = (mode != CPU_PLAYER)
+
+    changed
+    notify_observers('game_mode_updated', @state)
   end
 
   def start_game

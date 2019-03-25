@@ -7,6 +7,7 @@ class CLIMainMenuView
   def draw(_type, _mode)
     puts('Which game type?')
     puts('Options: Connect 4 (0) or Toot and Otto (1)')
+    game_type = AppModel::CONNECT_4
     valid_type = false
     until valid_type
       input = Readline.readline('Game type?', true)
@@ -20,19 +21,23 @@ class CLIMainMenuView
       end
     end
 
-    puts('Which game mode?')
-    puts('Options: Player vs. Player (0), Player vs. CPU (1), or CPU vs. Player (2)')
-    valid_mode = false
-    until valid_mode
-      input = Readline.readline('Game mode?', true)
-      if /[0-2]/.match?(input)
-        valid_mode = true
-        game_mode = Integer(/([0-2])/.match(input)[0])
-        changed
-        notify_observers('game_mode_changed', game_mode)
-      else
-        puts('Invalid game mode. Must be 0, 1, or 2')
+    if game_type == AppModel::CONNECT_4
+      puts('Which game mode?')
+      puts('Options: Player vs. Player (0), Player vs. CPU (1), or CPU vs. Player (2)')
+      valid_mode = false
+      until valid_mode
+        input = Readline.readline('Game mode?', true)
+        if /[0-2]/.match?(input)
+          valid_mode = true
+          game_mode = Integer(/([0-2])/.match(input)[0])
+          changed
+          notify_observers('game_mode_changed', game_mode)
+        else
+          puts('Invalid game mode. Must be 0, 1, or 2')
+        end
       end
+    elsif game_type == AppModel::TOOT_AND_OTTO
+      puts('Game mode is Player vs. Player')
     end
 
     changed
