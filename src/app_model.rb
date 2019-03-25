@@ -50,6 +50,8 @@ class AppModel
 
     return if app.nil?
 
+    @app = app
+
     app.signal_connect('activate') do |application|
       window = Gtk::ApplicationWindow.new(application)
       window.set_title('Ruby Connect Games')
