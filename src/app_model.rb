@@ -104,12 +104,21 @@ class AppModel
       @state[:result] = result
       update_game_phase(GAME_OVER)
     elsif @state[:turn] == PLAYER_1_TURN && token_played
-      update_turn(PLAYER_2_TURN)
+      if @state[:mode] == PLAYER_CPU
+        cpu_turn()
+      else
+        update_turn(PLAYER_2_TURN)
+      end
     elsif @state[:turn] == PLAYER_2_TURN && token_played
       update_turn(PLAYER_1_TURN)
     elsif !token_played
       update_turn(@state[:turn]) # Column was full, try again
     end
+  end
+
+  # our cpu algorithm works as follows
+  def cpu_turn()
+    
   end
 
   def game_result
