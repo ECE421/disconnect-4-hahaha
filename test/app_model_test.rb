@@ -15,6 +15,37 @@ class AppModelTest < Test::Unit::TestCase
     assert_equal(AppModel::PLAYER_2_TURN, @model.state[:turn])
   end
 
+  def test_update_type
+    assert_equal(AppModel::CONNECT_4, @model.state[:type])
+    @model.update_game_type(AppModel::TOOT_AND_OTTO)
+    assert_equal(AppModel::TOOT_AND_OTTO, @model.state[:type])
+  end
+
+  def test_update_mode
+    assert_equal(AppModel::PLAYER_PLAYER, @model.state[:mode])
+    @model.update_game_mode(AppModel::PLAYER_CPU)
+    assert_equal(AppModel::PLAYER_CPU, @model.state[:mode])
+    @model.update_game_mode(AppModel::CPU_PLAYER)
+    assert_equal(AppModel::CPU_PLAYER, @model.state[:mode])
+  end
+
+  def test_update_phase
+    assert_equal(AppModel::MENU, @model.state[:phase])
+    @model.update_game_phase(AppModel::IN_PROGRESS)
+    assert_equal(AppModel::IN_PROGRESS, @model.state[:phase])
+    @model.update_game_phase(AppModel::GAME_OVER)
+    assert_equal(AppModel::GAME_OVER, @model.state[:phase])
+  end
+
+  def test_column_full
+    6.times do
+      @model.place_token(0)
+    end
+    assert_equal(AppModel::PLAYER_1_TURN, @model.state[:turn])
+    @model.place_token(0)
+    assert_equal(AppModel::PLAYER_1_TURN, @model.state[:turn])
+  end
+
   def test_c4_vert
     3.times do
       @model.place_token(0)
@@ -68,7 +99,7 @@ class AppModelTest < Test::Unit::TestCase
     @model.place_token(1)
     @model.place_token(3)
     @model.board_place_token(2)
-    assert_equal(1, @model.toot_and_otto_horizontal)
+    assert_equal(AppModel::PLAYER_1_WINS, @model.toot_and_otto_horizontal)
   end
 
   def test_ot_vert
@@ -77,7 +108,7 @@ class AppModelTest < Test::Unit::TestCase
     @model.place_token(1)
     @model.place_token(0)
     @model.board_place_token(0)
-    assert_equal(1, @model.toot_and_otto_vertical)
+    assert_equal(AppModel::PLAYER_1_WINS, @model.toot_and_otto_vertical)
   end
 
   def test_ot_right_diag
@@ -92,7 +123,7 @@ class AppModelTest < Test::Unit::TestCase
     @model.place_token(3) #1
     @model.place_token(4) #2
     @model.board_place_token(3)
-    assert_equal(1, @model.toot_and_otto_right_diagonal)
+    assert_equal(AppModel::PLAYER_1_WINS, @model.toot_and_otto_right_diagonal)
   end
 
   def test_ot_left_diag
@@ -106,6 +137,6 @@ class AppModelTest < Test::Unit::TestCase
     @model.place_token(1) #2
     @model.place_token(3) #1
     @model.board_place_token(2)
-    assert_equal(1, @model.toot_and_otto_left_diagonal)
+    assert_equal(AppModel::PLAYER_1_WINS, @model.toot_and_otto_left_diagonal)
   end
 end
