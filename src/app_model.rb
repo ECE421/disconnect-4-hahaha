@@ -71,6 +71,11 @@ class AppModel
 
   def start_game
     update_game_phase(IN_PROGRESS)
+    if @state[:mode] == CPU_PLAYER
+      update_turn(PLAYER_2_TURN) # start player as player 2
+      cpu_turn # cpu makes a move
+      update_turn(PLAYER_1_TURN) # gives turn back to player 1
+    end
   end
 
   def back_to_main_menu
