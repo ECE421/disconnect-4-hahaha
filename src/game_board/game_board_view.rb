@@ -20,10 +20,10 @@ class GameBoardView
     @yellow_token.load(data: 'button {background-image: image(yellow);}')
 
     @t_token = Gtk::CssProvider.new
-    @t_token.load(data: "button {background-image: url(\"./src/game_board/t.png\");}")
+    @t_token.load(data: 'button {background-image: url("./src/game_board/t.png");}')
 
     @o_token = Gtk::CssProvider.new
-    @o_token.load(data: "button {background-image: url(\"./src/game_board/o.png\");}")
+    @o_token.load(data: 'button {background-image: url("./src/game_board/o.png");}')
 
     @cells = Array.new(6) { Array.new(7, nil) }
     @layout = Gtk::Fixed.new
