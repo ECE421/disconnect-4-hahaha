@@ -71,11 +71,10 @@ class AppModel
 
   def start_game
     update_game_phase(IN_PROGRESS)
-    if @state[:mode] == CPU_PLAYER
-      update_turn(PLAYER_2_TURN) # start player as player 2
-      cpu_turn # cpu makes a move
-      update_turn(PLAYER_1_TURN) # gives turn back to player 1
-    end
+    return unless @state[:mode] == CPU_PLAYER
+
+    cpu_turn # cpu makes a move
+    update_turn(PLAYER_2_TURN) # gives turn to player 2
   end
 
   def back_to_main_menu
@@ -184,26 +183,17 @@ class AppModel
   # cpu_progress works to progress the cpu to victory. it iterates all possible moves going left to right until it finds one that results in a win, it then erases all previous moves and places this move.
   def cpu_progress
     remove_array = []
-    next_move = nil
     (0..3).each do |_i|
-      break if game_result != NO_RESULT_YET
       (0..6).each do |c|
         token_placed = board_place_token(c)
-        remove_array.push(c) if token_placed # add move for later deletion
         if game_result != NO_RESULT_YET
-          next_move = c
-          break
+          remove_array.reverse_each do |r| # remove moves from our array 'stack'
+            board_remove_token(r)
+          end
+          return true
         end
+        remove_array.push(c) if token_placed # add move for later deletion
       end
-    end
-    remove_array.reverse_each do |c| # remove moves from our array 'stack'
-      board_remove_token(c)
-    end
-    if next_move # if we found a winning move do it
-      board_place_token(next_move)
-    else # otherwise look for a valid random move
-      move_made = false
-      move_made = board_place_token(rand(0..6)) until move_made
     end
   end
 
