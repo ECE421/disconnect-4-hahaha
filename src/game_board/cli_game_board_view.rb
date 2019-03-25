@@ -6,6 +6,7 @@ class CLIGameBoardView
   include(Observable)
 
   def initialize
+    @header = "\n1 2 3 4 5 6 7"
     @rows = [
       '_ _ _ _ _ _ _ ',
       '_ _ _ _ _ _ _ ',
@@ -35,8 +36,7 @@ class CLIGameBoardView
       end
     end
 
-    puts('')
-    puts('1 2 3 4 5 6 7')
+    puts(@header)
     @rows.each { |row| puts(row) }
 
     return unless state[:player_turn]
