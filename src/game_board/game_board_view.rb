@@ -59,18 +59,18 @@ class GameBoardView
     @window.add(@layout)
   end
 
-  def draw(board_data, game_type)
+  def draw(state)
     (0..6).each do |col|
       (0..5).each do |row|
-        if (board_data[row][col]).zero?
+        if (state[:board_data][row][col]).zero?
           @cells[row][col].style_context.add_provider(@empty_cell, Gtk::StyleProvider::PRIORITY_USER)
-        elsif board_data[row][col] == 1 && game_type == AppModel::CONNECT_4
+        elsif state[:board_data][row][col] == 1 && state[:type] == AppModel::CONNECT_4
           @cells[row][col].style_context.add_provider(@red_token, Gtk::StyleProvider::PRIORITY_USER)
-        elsif board_data[row][col] == 1 && game_type == AppModel::TOOT_AND_OTTO
+        elsif state[:board_data][row][col] == 1 && state[:type] == AppModel::TOOT_AND_OTTO
           @cells[row][col].style_context.add_provider(@t_token, Gtk::StyleProvider::PRIORITY_USER)
-        elsif board_data[row][col] == 2 && game_type == AppModel::CONNECT_4
+        elsif state[:board_data][row][col] == 2 && state[:type] == AppModel::CONNECT_4
           @cells[row][col].style_context.add_provider(@yellow_token, Gtk::StyleProvider::PRIORITY_USER)
-        elsif board_data[row][col] == 2 && game_type == AppModel::TOOT_AND_OTTO
+        elsif state[:board_data][row][col] == 2 && state[:type] == AppModel::TOOT_AND_OTTO
           @cells[row][col].style_context.add_provider(@o_token, Gtk::StyleProvider::PRIORITY_USER)
         end
       end

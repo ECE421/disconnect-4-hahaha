@@ -6,10 +6,10 @@ class MainMenuPresenter
 
   def update(signal, data)
     if signal == 'game_type_changed'
-      @model.update_game_type(data[:type])
+      @model.update_game_type(data)
     elsif signal == 'game_mode_changed'
-      @model.update_game_mode(data[:mode])
-    elsif signal == 'start_game_clicked'
+      @model.update_game_mode(data)
+    elsif signal == 'start_game'
       @model.start_game
     else
       raise ArgumentError

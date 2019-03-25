@@ -7,6 +7,10 @@ class AppModel
 
   attr_reader(:app, :state)
 
+  # Interface type
+  GUI = 0
+  CLI = 1
+
   # Player turns
   PLAYER_1_TURN = 1
   PLAYER_2_TURN = 2
@@ -31,10 +35,12 @@ class AppModel
   PLAYER_2_WINS = 2
   TIE = 3
 
-  def initialize(app, presenter)
+  def initialize(app, presenter, interface = GUI)
     # Initial game state
     @state = {
+      interface: interface,
       turn: PLAYER_1_TURN,
+      player_turn: true,
       type: CONNECT_4,
       mode: PLAYER_PLAYER,
       phase: MENU,
@@ -48,18 +54,24 @@ class AppModel
     changed
     notify_observers('attach_model', self)
 
-    return if app.nil?
+    if interface == GUI
+      return if app.nil?
 
-    @app = app
+      @app = app
+      @app.signal_connect('activate') do |application|
+        window = Gtk::ApplicationWindow.new(application)
+        window.set_title('Ruby Connect Games')
+        window.set_size_request(400, 400)
+        window.set_border_width(20)
 
-    app.signal_connect('activate') do |application|
-      window = Gtk::ApplicationWindow.new(application)
-      window.set_title('Ruby Connect Games')
-      window.set_size_request(400, 400)
-      window.set_border_width(20)
-
+        changed
+        notify_observers('init_views', window, @state[:interface])
+        changed
+        notify_observers('game_phase_updated', @state) # Start the game at the main menu
+      end
+    elsif interface == CLI
       changed
-      notify_observers('init_views', window)
+      notify_observers('init_views', nil, @state[:interface])
       changed
       notify_observers('game_phase_updated', @state) # Start the game at the main menu
     end
@@ -67,6 +79,19 @@ class AppModel
 
   def update_turn(turn)
     @state[:turn] = turn
+
+    if turn == 1 && @state[:mode] == PLAYER_CPU
+      @state[:player_turn] = true
+    elsif turn == 2 && @state[:mode] == PLAYER_CPU
+      @state[:player_turn] = false
+    end
+
+    if turn == 1 && @state[:mode] == CPU_PLAYER
+      @state[:player_turn] = false
+    elsif turn == 2 && @state[:mode] == CPU_PLAYER
+      @state[:player_turn] = true
+    end
+
     changed
     notify_observers('turn_updated', @state)
   end
@@ -77,6 +102,7 @@ class AppModel
 
   def update_game_mode(mode)
     @state[:mode] = mode
+    @state[:player_turn] = (mode != CPU_PLAYER)
   end
 
   def start_game
