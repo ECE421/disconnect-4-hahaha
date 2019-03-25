@@ -137,7 +137,7 @@ class AppModel
   end
 
   # our cpu algorithm works as follows
-  # 1. attempt to place a token in each column as current player (aggresion)
+  # 1. attempt to place a token in each column as current player (aggression)
   # if any token results in a win then make that placement
   # 2. attempt to place a token in each column as opposite player (prevention)
   # if any token results in a win then make that placement
@@ -146,7 +146,8 @@ class AppModel
     cpu_progress unless cpu_attempt || cpu_prevent # ruby craziness
   end
 
-  # cpu_attempt works to try to win the game by placing a token in each column once and checking to see if any result in a win condition. it clears all unsuccessfull token attempts
+  # cpu_attempt works to try to win the game by placing a token in each column once and checking to see if any result in
+  # a win condition. it clears all unsuccessful token attempts
   def cpu_attempt
     (0..6).each do |c|
       token_placed = board_place_token(c)
@@ -161,7 +162,9 @@ class AppModel
     false
   end
 
-  # cpu_prevent works to try and stop the other player from winning the game by placing a token in each column once as the other player and checking to see if any result in a win condition, if so then it places a token there as the cpu to prevent the win. it clears all unsuccessfull token attempts
+  # cpu_prevent works to try and stop the other player from winning the game by placing a token in each column once as
+  # the other player and checking to see if any result in a win condition, if so then it places a token there as the cpu
+  # to prevent the win. it clears all unsuccessful token attempts
   def cpu_prevent
     current_turn = @state[:turn]
     @state[:turn] = current_turn == PLAYER_1_TURN ? PLAYER_2_TURN : PLAYER_1_TURN # pretend to be other player
@@ -180,7 +183,8 @@ class AppModel
     false
   end
 
-  # cpu_progress works to progress the cpu to victory. it iterates all possible moves going left to right until it finds one that results in a win, it then erases all previous moves and places this move.
+  # cpu_progress works to progress the cpu to victory. it iterates all possible moves going left to right until it finds
+  # one that results in a win, it then erases all previous moves and places this move.
   def cpu_progress
     remove_array = []
     (0..3).each do |_i|
