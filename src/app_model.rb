@@ -459,7 +459,7 @@ class AppModel
       if ['', 'too'].include?(consecutive_toot)
         consecutive_toot += 't'
       else
-        consecutive_toot = ''
+        consecutive_toot = 't'
       end
 
       if %w[o ot].include?(consecutive_otto)
@@ -477,7 +477,7 @@ class AppModel
       if ['', 'ott'].include?(consecutive_otto)
         consecutive_otto += 'o'
       else
-        consecutive_otto = ''
+        consecutive_otto = 'o'
       end
     end
 
