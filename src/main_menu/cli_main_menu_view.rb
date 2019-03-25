@@ -11,9 +11,9 @@ class CLIMainMenuView
     valid_type = false
     until valid_type
       input = Readline.readline('Game type?', true)
-      if /[0-1]/.match?(input)
+      if %w[0 1].include?(input)
         valid_type = true
-        game_type = Integer(/([0-1])/.match(input)[0])
+        game_type = Integer(input)
         changed
         notify_observers('game_type_changed', game_type)
       else
@@ -27,9 +27,9 @@ class CLIMainMenuView
       valid_mode = false
       until valid_mode
         input = Readline.readline('Game mode?', true)
-        if /[0-2]/.match?(input)
+        if %w[0 1 2].include?(input)
           valid_mode = true
-          game_mode = Integer(/([0-2])/.match(input)[0])
+          game_mode = Integer(input)
           changed
           notify_observers('game_mode_changed', game_mode)
         else
