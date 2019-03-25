@@ -11,14 +11,17 @@ require_relative 'main_menu/main_menu_view'
 # Presenter class for the AppModel
 class AppPresenter
   def update(signal, *data)
-    if signal == 'attach_model'
+    case signal
+    when 'attach_model'
       attach_model(data[0])
-    elsif signal == 'init_views'
+    when 'init_views'
       init_views(data[0], data[1])
-    elsif signal == 'turn_updated'
+    when 'turn_updated'
       turn_updated(data[0])
-    elsif signal == 'game_phase_updated'
+    when 'game_phase_updated'
       game_phase_updated(data[0])
+    else
+      raise(ArgumentError)
     end
   end
 
