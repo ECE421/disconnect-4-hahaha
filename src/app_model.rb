@@ -456,7 +456,7 @@ class AppModel
     return ['', ''] if element.zero?
 
     if element == 1
-      if %W[#{+''} too].include?(consecutive_toot)
+      if ['', 'too'].include?(consecutive_toot)
         consecutive_toot += 't'
       else
         consecutive_toot = ''
@@ -474,7 +474,7 @@ class AppModel
         consecutive_toot = ''
       end
 
-      if %W[#{+''} ott].include?(consecutive_otto)
+      if ['', 'ott'].include?(consecutive_otto)
         consecutive_otto += 'o'
       else
         consecutive_otto = ''
